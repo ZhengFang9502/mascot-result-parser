@@ -4,8 +4,6 @@ import cn.ac.dicp.group1809.utilities.mascot_result_parser.csv.model.FixedModifi
 import cn.ac.dicp.group1809.utilities.mascot_result_parser.csv.model.MascotCSV;
 import cn.ac.dicp.group1809.utilities.mascot_result_parser.csv.model.PeptideHit;
 import cn.ac.dicp.group1809.utilities.mascot_result_parser.csv.model.VariableModificationTable;
-import cn.ac.dicp.group1809.utilities.proteomics_framework.model.definition.proteomics.Peptide;
-import cn.ac.dicp.group1809.utilities.proteomics_toolkit.Calculator;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
@@ -16,8 +14,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
 
-import static java.lang.System.out;
-
 /**
  * Generate a {@link MascotCSV MascotCSV} with necessary information defined depended on the csv file.
  *
@@ -26,7 +22,11 @@ import static java.lang.System.out;
  */
 public class MascotCSVReader {
 	private Logger logger = LoggerFactory.getLogger(MascotCSVReader.class);
-	public static MascotCSVReader instance = new MascotCSVReader();
+	private static final MascotCSVReader instance = new MascotCSVReader();
+
+	public static MascotCSVReader getInstance() {
+		return instance;
+	}
 
 	private MascotCSVReader() {
 	}
