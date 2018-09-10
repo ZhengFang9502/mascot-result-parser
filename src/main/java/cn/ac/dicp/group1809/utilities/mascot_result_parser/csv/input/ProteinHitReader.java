@@ -3,12 +3,10 @@ package cn.ac.dicp.group1809.utilities.mascot_result_parser.csv.input;
 import cn.ac.dicp.group1809.utilities.mascot_result_parser.csv.model.MascotCSV;
 import cn.ac.dicp.group1809.utilities.mascot_result_parser.csv.model.PeptideHit;
 import cn.ac.dicp.group1809.utilities.proteomics_framework.model.definition.common.Composition;
-import cn.ac.dicp.group1809.utilities.proteomics_framework.model.definition.proteomics.CompositionItemInf;
 import cn.ac.dicp.group1809.utilities.proteomics_framework.model.definition.proteomics.Modification;
 import cn.ac.dicp.group1809.utilities.proteomics_framework.model.definition.proteomics.ModificationSite;
 import cn.ac.dicp.group1809.utilities.proteomics_framework.model.enumeration.AminoAcid;
 import cn.ac.dicp.group1809.utilities.proteomics_framework.model.enumeration.Constant;
-import cn.ac.dicp.group1809.utilities.proteomics_toolkit.ModificationParser;
 import org.apache.commons.csv.CSVRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -203,7 +201,7 @@ class ProteinHitReader {
 		return peptideHitList;
 	}
 
-	void setProperty(PeptideHit peptideHit){
+	private void setProperty(PeptideHit peptideHit) {
 		char beforeResidue = peptideHit.getBeforeResidue();
 		String sequence = peptideHit.getSequence();
 		char afterResidue = peptideHit.getAfterResidue();
@@ -256,18 +254,18 @@ class ProteinHitReader {
 			}
 		}
 		String pep_var_mod_pos = peptideHit.getPep_var_mod_pos();
-		if (pep_var_mod_pos!=null){
+		if (pep_var_mod_pos != null) {
 			String[] split = pep_var_mod_pos.split("\\.");
 			char[] chars = split[1].toCharArray();
-			for (int i=0;i<chars.length;i++){
-				if (chars[i]!='0'){
+			for (int i = 0; i < chars.length; i++) {
+				if (chars[i] != '0') {
 					int id = chars[i] - 48;
-					modificationPosition.put(i,variableModificationTable.get(id));
+					modificationPosition.put(i, variableModificationTable.get(id));
 				}
 			}
 		}
 		peptideHit.setModificationPosition(modificationPosition);
-		Composition composition=new Composition();
+		Composition composition = new Composition();
 		for (char sequenceAA : sequenceAAs) {
 			AminoAcid aminoAcid = AminoAcid.forOneLetter(sequenceAA);
 			composition.add(aminoAcid.getResidueComposition());

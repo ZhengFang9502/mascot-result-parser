@@ -50,7 +50,7 @@ class DecoyReader {
 		return decoy;
 	}
 
-	public int getRowNum() {
+	int getRowNum() {
 		return rowNum;
 	}
 }

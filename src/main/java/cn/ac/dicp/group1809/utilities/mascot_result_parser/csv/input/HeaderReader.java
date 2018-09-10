@@ -92,7 +92,7 @@ class HeaderReader {
 		return header;
 	}
 
-	public int getRowNum() {
+	int getRowNum() {
 		return rowNum;
 	}
 }

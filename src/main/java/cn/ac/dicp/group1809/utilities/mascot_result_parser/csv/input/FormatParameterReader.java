@@ -74,7 +74,7 @@ class FormatParameterReader {
 		return format_parameters;
 	}
 
-	public int getRowNum() {
+	int getRowNum() {
 		return rowNum;
 	}
 }
