@@ -1,8 +1,8 @@
 package cn.ac.dicp.group1809.utilities.mascot_result_parser.csv.model;
 
-import cn.ac.dicp.group1809.utilities.proteomics_framework.model.definition.proteomics.CompositionItemInf;
+import cn.ac.dicp.group1809.utilities.proteomics_framework.model.definition.proteomics.PSM;
 import cn.ac.dicp.group1809.utilities.proteomics_framework.model.definition.proteomics.Peptide;
-import cn.ac.dicp.group1809.utilities.proteomics_framework.model.definition.proteomics.PeptideInf;
+import cn.ac.dicp.group1809.utilities.proteomics_framework.model.definition.proteomics.Precursor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
  * @author ZhengFang 2018/1/15
  * @since V1.0
  */
-public class PeptideHit extends Peptide implements PeptideInf, CompositionItemInf {
+public class PeptideHit extends PSM {
 	private Logger logger = LoggerFactory.getLogger(PeptideHit.class);
 	/**
 	 * Ordinal number of the protein hit (or protein family when grouping enabled)
@@ -106,18 +106,18 @@ public class PeptideHit extends Peptide implements PeptideInf, CompositionItemIn
 	 * PeptideHit sequence is unique to hit (grouping off) or family member (grouping on)
 	 */
 	private boolean pep_isunique;
-	/**
-	 * Observed or experimental m/z value.
-	 */
-	private double pep_exp_mz;
-	/**
-	 * Molecular mass calculated from experimental m/z value.
-	 */
-	private double pep_exp_mr;
-	/**
-	 * Observed or experimental charge
-	 */
-	private int pep_exp_z;
+//	/**
+//	 * Observed or experimental m/z value.
+//	 */
+//	private double pep_exp_mz;
+//	/**
+//	 * Molecular mass calculated from experimental m/z value.
+//	 */
+//	private double pep_exp_mr;
+//	/**
+//	 * Observed or experimental charge
+//	 */
+//	private int pep_exp_z;
 //	/**
 //	 * Molecular mass calculated from matched peptide sequence
 //	 */
@@ -138,10 +138,10 @@ public class PeptideHit extends Peptide implements PeptideInf, CompositionItemIn
 	 * Count of missed cleavage sites in peptide
 	 */
 	private int pep_miss;
-	/**
-	 * Mascot score for PSM
-	 */
-	private double pep_score;
+//	/**
+//	 * Mascot score for PSM
+//	 */
+//	private double pep_score;
 	/**
 	 * Homology threshold score for PSM
 	 */
@@ -220,11 +220,12 @@ public class PeptideHit extends Peptide implements PeptideInf, CompositionItemIn
 	}
 
 	public String getProt_acc() {
-		return super.getProteinAccession();
+		return super.getPeptide().getProteinAccession();
 	}
 
 	public void setProt_acc(String prot_acc) {
-		super.setProteinAccession(prot_acc);
+		Peptide peptide = super.getPeptide();
+		peptide.setProteinAccession(prot_acc);
 	}
 
 	public String getProt_desc() {
@@ -388,39 +389,42 @@ public class PeptideHit extends Peptide implements PeptideInf, CompositionItemIn
 	}
 
 	public double getPep_exp_mz() {
-		return pep_exp_mz;
+		return super.getPrecursor().getMz();
 	}
 
 	public void setPep_exp_mz(double pep_exp_mz) {
-		this.pep_exp_mz = pep_exp_mz;
+		Precursor precursor = super.getPrecursor();
+		precursor.setMz(pep_exp_mz);
 	}
 
 	public double getPep_exp_mr() {
-		return pep_exp_mr;
+		return super.getPeptideExpMW();
 	}
 
 	public void setPep_exp_mr(double pep_exp_mr) {
-		this.pep_exp_mr = pep_exp_mr;
+		super.setPeptideExpMW(pep_exp_mr);
 	}
 
 	public int getPep_exp_z() {
-		return pep_exp_z;
+		return super.getPrecursor().getCharge();
 	}
 
 	public void setPep_exp_z(int pep_exp_z) {
-		this.pep_exp_z = pep_exp_z;
+		Precursor precursor = super.getPrecursor();
+		precursor.setCharge(pep_exp_z);
 	}
 
 	public double getPep_calc_mr() {
-		return super.getMonoisotopicMW();
+		return super.getPeptide().getMonoisotopicMW();
 	}
 
 	public void setPep_calc_mr(double pep_calc_mr) {
-		super.setMonoisotopicMW(pep_calc_mr);
+		Peptide peptide = super.getPeptide();
+		peptide.setMonoisotopicMW(pep_calc_mr);
 	}
 
 	public double getPep_delta() {
-		return pep_delta;
+		return this.pep_delta;
 	}
 
 	public void setPep_delta(double pep_delta) {
@@ -428,19 +432,21 @@ public class PeptideHit extends Peptide implements PeptideInf, CompositionItemIn
 	}
 
 	public int getPep_start() {
-		return super.getStart();
+		return super.getPeptide().getStart();
 	}
 
 	public void setPep_start(int pep_start) {
-		super.setStart(pep_start);
+		Peptide peptide = super.getPeptide();
+		peptide.setStart(pep_start);
 	}
 
 	public int getPep_end() {
-		return super.getEnd();
+		return super.getPeptide().getEnd();
 	}
 
 	public void setPep_end(int pep_end) {
-		super.setEnd(pep_end);
+		Peptide peptide = super.getPeptide();
+		peptide.setEnd(pep_end);
 	}
 
 	public int getPep_miss() {
@@ -452,11 +458,11 @@ public class PeptideHit extends Peptide implements PeptideInf, CompositionItemIn
 	}
 
 	public double getPep_score() {
-		return pep_score;
+		return super.getPsmScore();
 	}
 
 	public void setPep_score(double pep_score) {
-		this.pep_score = pep_score;
+		super.setPsmScore(pep_score);
 	}
 
 	public double getPep_homol() {
@@ -484,27 +490,30 @@ public class PeptideHit extends Peptide implements PeptideInf, CompositionItemIn
 	}
 
 	public char getPep_res_before() {
-		return super.getBeforeResidue();
+		return super.getPeptide().getBeforeResidue();
 	}
 
 	public void setPep_res_before(char pep_res_before) {
-		super.setBeforeResidue(pep_res_before);
+		Peptide peptide = super.getPeptide();
+		peptide.setBeforeResidue(pep_res_before);
 	}
 
 	public String getPep_seq() {
-		return super.getSequence();
+		return super.getPeptide().getSequence();
 	}
 
 	public void setPep_seq(String pep_seq) {
-		super.setSequence(pep_seq);
+		Peptide peptide = super.getPeptide();
+		peptide.setSequence(pep_seq);
 	}
 
 	public char getPep_res_after() {
-		return super.getAfterResidue();
+		return super.getPeptide().getAfterResidue();
 	}
 
 	public void setPep_res_after(char pep_res_after) {
-		super.setAfterResidue(pep_res_after);
+		Peptide peptide = super.getPeptide();
+		peptide.setAfterResidue(pep_res_after);
 	}
 
 	public String getPep_frame() {
@@ -524,7 +533,7 @@ public class PeptideHit extends Peptide implements PeptideInf, CompositionItemIn
 	}
 
 	public String getPep_var_mod_pos() {
-		return pep_var_mod_pos;
+		return this.pep_var_mod_pos;
 	}
 
 	public void setPep_var_mod_pos(String pep_var_mod_pos) {
@@ -564,11 +573,11 @@ public class PeptideHit extends Peptide implements PeptideInf, CompositionItemIn
 	}
 
 	public String getPep_scan_title() {
-		return super.getTitle();
+		return super.getSpectrumTitle();
 	}
 
 	public void setPep_scan_title(String pep_scan_title) {
-		super.setTitle(pep_scan_title);
+		super.setSpectrumTitle(pep_scan_title);
 	}
 
 	public String getPep_source() {
@@ -630,15 +639,15 @@ public class PeptideHit extends Peptide implements PeptideInf, CompositionItemIn
 		stringBuilder.append(pep_rank == 0 ? "" : pep_rank).append(",");
 		stringBuilder.append(pep_isbold ? "1" : "0").append(",");
 		stringBuilder.append(pep_isunique ? "1" : "0").append(",");
-		stringBuilder.append(pep_exp_mz == 0 ? "" : pep_exp_mz).append(",");
-		stringBuilder.append(pep_exp_mr == 0 ? "" : pep_exp_mr).append(",");
-		stringBuilder.append(pep_exp_z == 0 ? "" : pep_exp_z).append(",");
+		stringBuilder.append(getPep_exp_mz() == 0 ? "" : getPep_exp_mz()).append(",");
+		stringBuilder.append(super.getPeptideExpMW() == 0 ? "" : super.getPeptideExpMW()).append(",");
+		stringBuilder.append(getPep_exp_z() == 0 ? "" : getPep_exp_z()).append(",");
 		stringBuilder.append(getPep_calc_mr() == 0 ? "" : getPep_calc_mr()).append(",");
 		stringBuilder.append(pep_delta == 0 ? "" : pep_delta).append(",");
 		stringBuilder.append(getPep_start() == 0 ? "" : getPep_start()).append(",");
 		stringBuilder.append(getPep_end() == 0 ? "" : getPep_end()).append(",");
 		stringBuilder.append(pep_miss == 0 ? "" : pep_miss).append(",");
-		stringBuilder.append(pep_score == 0 ? "" : pep_score).append(",");
+		stringBuilder.append(getPep_score() == 0 ? "" : getPep_score()).append(",");
 		stringBuilder.append(pep_homol == 0 ? "" : pep_homol).append(",");
 		stringBuilder.append(pep_ident == 0 ? "" : pep_ident).append(",");
 		stringBuilder.append(pep_expect == 0 ? "" : pep_expect).append(",");

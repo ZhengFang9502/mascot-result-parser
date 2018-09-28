@@ -2,11 +2,11 @@ package cn.ac.dicp.group1809.utilities.mascot_result_parser.csv.input;
 
 import cn.ac.dicp.group1809.utilities.mascot_result_parser.csv.model.MascotCSV;
 import cn.ac.dicp.group1809.utilities.mascot_result_parser.csv.model.PeptideHit;
-import cn.ac.dicp.group1809.utilities.proteomics_framework.model.definition.common.Composition;
 import cn.ac.dicp.group1809.utilities.proteomics_framework.model.definition.proteomics.Modification;
 import cn.ac.dicp.group1809.utilities.proteomics_framework.model.definition.proteomics.ModificationSite;
+import cn.ac.dicp.group1809.utilities.proteomics_framework.model.definition.proteomics.Peptide;
 import cn.ac.dicp.group1809.utilities.proteomics_framework.model.enumeration.AminoAcid;
-import cn.ac.dicp.group1809.utilities.proteomics_framework.model.enumeration.Constant;
+import cn.ac.dicp.group1809.utilities.proteomics_toolkit.PeptideParser;
 import org.apache.commons.csv.CSVRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -202,9 +202,10 @@ class ProteinHitReader {
 	}
 
 	private void setProperty(PeptideHit peptideHit) {
-		char beforeResidue = peptideHit.getBeforeResidue();
-		String sequence = peptideHit.getSequence();
-		char afterResidue = peptideHit.getAfterResidue();
+		Peptide peptide = peptideHit.getPeptide();
+		char beforeResidue = peptide.getBeforeResidue();
+		String sequence = peptide.getSequence();
+		char afterResidue = peptide.getAfterResidue();
 		char[] sequenceAAs = sequence.toCharArray();
 		int length = sequenceAAs.length;
 		AminoAcid firstAA = AminoAcid.forOneLetter(sequenceAAs[0]);
@@ -264,16 +265,7 @@ class ProteinHitReader {
 				}
 			}
 		}
-		peptideHit.setModificationPosition(modificationPosition);
-		Composition composition = new Composition();
-		for (char sequenceAA : sequenceAAs) {
-			AminoAcid aminoAcid = AminoAcid.forOneLetter(sequenceAA);
-			composition.add(aminoAcid.getResidueComposition());
-		}
-		composition.add(Constant.Water.getComposition());
-		for (Modification modification : modificationPosition.values()) {
-			composition.add(modification.getComposition());
-		}
-		peptideHit.setComposition(composition);
+		peptide.setModificationPosition(modificationPosition);
+		PeptideParser.setComposition(peptide);
 	}
 }
