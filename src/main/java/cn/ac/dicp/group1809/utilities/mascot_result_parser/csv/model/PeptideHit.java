@@ -458,11 +458,11 @@ public class PeptideHit extends PSM {
 	}
 
 	public double getPep_score() {
-		return super.getPsmScore();
+		return super.getPSMScore();
 	}
 
 	public void setPep_score(double pep_score) {
-		super.setPsmScore(pep_score);
+		super.setPSMScore(pep_score);
 	}
 
 	public double getPep_homol() {
@@ -573,11 +573,11 @@ public class PeptideHit extends PSM {
 	}
 
 	public String getPep_scan_title() {
-		return super.getSpectrumTitle();
+		return super.getTitle();
 	}
 
 	public void setPep_scan_title(String pep_scan_title) {
-		super.setSpectrumTitle(pep_scan_title);
+		super.setTitle(pep_scan_title);
 	}
 
 	public String getPep_source() {
