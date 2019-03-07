@@ -2,9 +2,12 @@ package cn.ac.dicp.group1809.utilities.mascot_result_parser.csv.model;
 
 import cn.ac.dicp.group1809.utilities.proteomics_framework.model.definition.proteomics.PSM;
 import cn.ac.dicp.group1809.utilities.proteomics_framework.model.definition.proteomics.Peptide;
+import cn.ac.dicp.group1809.utilities.proteomics_framework.model.definition.proteomics.PeptideEvidence;
 import cn.ac.dicp.group1809.utilities.proteomics_framework.model.definition.proteomics.Precursor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 /**
  * A model of a peptide hit of mascot search result.
@@ -220,12 +223,18 @@ public class PeptideHit extends PSM {
 	}
 
 	public String getProt_acc() {
-		return super.getPeptide().getProteinAccession();
+		return super.getPeptide().getPeptideEvidenceList().get(0).getProteinAccession();
 	}
 
 	public void setProt_acc(String prot_acc) {
 		Peptide peptide = super.getPeptide();
-		peptide.setProteinAccession(prot_acc);
+		List<PeptideEvidence> peptideEvidenceList = peptide.getPeptideEvidenceList();
+		if (peptideEvidenceList.size() == 0) {
+			PeptideEvidence peptideEvidence = new PeptideEvidence();
+			peptideEvidenceList.add(peptideEvidence);
+			peptide.setPeptideEvidenceList(peptideEvidenceList);
+		}
+		peptide.getPeptideEvidenceList().get(0).setProteinAccession(prot_acc);
 	}
 
 	public String getProt_desc() {
@@ -432,21 +441,33 @@ public class PeptideHit extends PSM {
 	}
 
 	public int getPep_start() {
-		return super.getPeptide().getStart();
+		return super.getPeptide().getPeptideEvidenceList().get(0).getStart();
 	}
 
 	public void setPep_start(int pep_start) {
 		Peptide peptide = super.getPeptide();
-		peptide.setStart(pep_start);
+		List<PeptideEvidence> peptideEvidenceList = peptide.getPeptideEvidenceList();
+		if (peptideEvidenceList.size() == 0) {
+			PeptideEvidence peptideEvidence = new PeptideEvidence();
+			peptideEvidenceList.add(peptideEvidence);
+			peptide.setPeptideEvidenceList(peptideEvidenceList);
+		}
+		peptide.getPeptideEvidenceList().get(0).setStart(pep_start);
 	}
 
 	public int getPep_end() {
-		return super.getPeptide().getEnd();
+		return super.getPeptide().getPeptideEvidenceList().get(0).getEnd();
 	}
 
 	public void setPep_end(int pep_end) {
 		Peptide peptide = super.getPeptide();
-		peptide.setEnd(pep_end);
+		List<PeptideEvidence> peptideEvidenceList = peptide.getPeptideEvidenceList();
+		if (peptideEvidenceList.size() == 0) {
+			PeptideEvidence peptideEvidence = new PeptideEvidence();
+			peptideEvidenceList.add(peptideEvidence);
+			peptide.setPeptideEvidenceList(peptideEvidenceList);
+		}
+		peptide.getPeptideEvidenceList().get(0).setEnd(pep_end);
 	}
 
 	public int getPep_miss() {
@@ -490,12 +511,18 @@ public class PeptideHit extends PSM {
 	}
 
 	public char getPep_res_before() {
-		return super.getPeptide().getBeforeResidue();
+		return super.getPeptide().getPeptideEvidenceList().get(0).getBeforeResidue();
 	}
 
 	public void setPep_res_before(char pep_res_before) {
 		Peptide peptide = super.getPeptide();
-		peptide.setBeforeResidue(pep_res_before);
+		List<PeptideEvidence> peptideEvidenceList = peptide.getPeptideEvidenceList();
+		if (peptideEvidenceList.size() == 0) {
+			PeptideEvidence peptideEvidence = new PeptideEvidence();
+			peptideEvidenceList.add(peptideEvidence);
+			peptide.setPeptideEvidenceList(peptideEvidenceList);
+		}
+		peptide.getPeptideEvidenceList().get(0).setBeforeResidue(pep_res_before);
 	}
 
 	public String getPep_seq() {
@@ -508,12 +535,18 @@ public class PeptideHit extends PSM {
 	}
 
 	public char getPep_res_after() {
-		return super.getPeptide().getAfterResidue();
+		return super.getPeptide().getPeptideEvidenceList().get(0).getAfterResidue();
 	}
 
 	public void setPep_res_after(char pep_res_after) {
 		Peptide peptide = super.getPeptide();
-		peptide.setAfterResidue(pep_res_after);
+		List<PeptideEvidence> peptideEvidenceList = peptide.getPeptideEvidenceList();
+		if (peptideEvidenceList.size() == 0) {
+			PeptideEvidence peptideEvidence = new PeptideEvidence();
+			peptideEvidenceList.add(peptideEvidence);
+			peptide.setPeptideEvidenceList(peptideEvidenceList);
+		}
+		peptide.getPeptideEvidenceList().get(0).setAfterResidue(pep_res_after);
 	}
 
 	public String getPep_frame() {
@@ -589,11 +622,6 @@ public class PeptideHit extends PSM {
 	}
 
 	@Override
-	public int hashCode() {
-		return this.getPep_seq().length();
-	}
-
-	@Override
 	public boolean equals(Object obj) {
 		if (obj == null) {
 			return false;
@@ -611,6 +639,11 @@ public class PeptideHit extends PSM {
 			return this.getPep_var_mod_pos().equals(pep_var_mod_pos);
 		}
 		return false;
+	}
+
+	@Override
+	public int hashCode() {
+		return this.getPep_seq().length();
 	}
 
 	@Override

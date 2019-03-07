@@ -6,7 +6,7 @@ import cn.ac.dicp.group1809.utilities.proteomics_framework.model.definition.prot
 import cn.ac.dicp.group1809.utilities.proteomics_framework.model.definition.proteomics.ModificationSite;
 import cn.ac.dicp.group1809.utilities.proteomics_framework.model.definition.proteomics.Peptide;
 import cn.ac.dicp.group1809.utilities.proteomics_framework.model.enumeration.AminoAcid;
-import cn.ac.dicp.group1809.utilities.proteomics_toolkit.PeptideParser;
+import cn.ac.dicp.group1809.utilities.proteomics_toolkit.PeptideUtils;
 import org.apache.commons.csv.CSVRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -203,9 +203,9 @@ class ProteinHitReader {
 
 	private void setProperty(PeptideHit peptideHit) {
 		Peptide peptide = peptideHit.getPeptide();
-		char beforeResidue = peptide.getBeforeResidue();
+		char beforeResidue = peptideHit.getPep_res_before();
 		String sequence = peptide.getSequence();
-		char afterResidue = peptide.getAfterResidue();
+		char afterResidue = peptideHit.getPep_res_after();
 		char[] sequenceAAs = sequence.toCharArray();
 		int length = sequenceAAs.length;
 		AminoAcid firstAA = AminoAcid.forOneLetter(sequenceAAs[0]);
@@ -266,6 +266,6 @@ class ProteinHitReader {
 			}
 		}
 		peptide.setModificationPosition(modificationPosition);
-		PeptideParser.setComposition(peptide);
+		PeptideUtils.setComposition(peptide);
 	}
 }

@@ -6,7 +6,7 @@
 
     <groupId>cn.ac.dicp.group1809.utilities</groupId>
     <artifactId>mascot-result-parser</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.1</version>
     <description>For mascot search result reading and analysing.</description>
 
     <developers>
@@ -22,20 +22,38 @@
         <dependency>
             <groupId>cn.ac.dicp.group1809.utilities</groupId>
             <artifactId>proteomics-framework</artifactId>
-            <version>1.0.0</version>
+            <version>1.0.1</version>
         </dependency>
         <dependency>
             <groupId>cn.ac.dicp.group1809.utilities</groupId>
             <artifactId>proteomics-toolkit</artifactId>
-            <version>1.0.0</version>
+            <version>1.0.1</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-csv -->
         <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-csv</artifactId>
-            <version>1.5</version>
+            <groupId>uk.ac.ebi.pride.tools</groupId>
+            <artifactId>jmzreader</artifactId>
+            <version>2.0.5</version>
+            <type>jar</type>
+            <exclusions>
+                <exclusion>
+                    <groupId>uk.ac.ebi.pride.architectural</groupId>
+                    <artifactId>pride-logging</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-log4j12</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
+
+    <repositories>
+        <repository>
+            <id>pst-release</id>
+            <name>EBI Nexus Repository</name>
+            <url>http://www.ebi.ac.uk/Tools/maven/repos/content/repositories/pst-release</url>
+        </repository>
+    </repositories>
 
     <build>
         <plugins>
