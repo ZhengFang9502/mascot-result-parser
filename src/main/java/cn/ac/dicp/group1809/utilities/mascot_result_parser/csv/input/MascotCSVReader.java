@@ -1,9 +1,11 @@
 package cn.ac.dicp.group1809.utilities.mascot_result_parser.csv.input;
 
-import cn.ac.dicp.group1809.utilities.mascot_result_parser.csv.model.FixedModificationTable;
-import cn.ac.dicp.group1809.utilities.mascot_result_parser.csv.model.MascotCSV;
-import cn.ac.dicp.group1809.utilities.mascot_result_parser.csv.model.PeptideHit;
-import cn.ac.dicp.group1809.utilities.mascot_result_parser.csv.model.VariableModificationTable;
+import cn.ac.dicp.group1809.utilities.mascot_result_parser.csv.model.*;
+import cn.ac.dicp.group1809.utilities.proteomics_framework.model.definition.proteomics.Peptide;
+import cn.ac.dicp.group1809.utilities.proteomics_framework.model.definition.proteomics.PeptideEvidence;
+import cn.ac.dicp.group1809.utilities.proteomics_framework.model.definition.proteomics.Protein;
+import cn.ac.dicp.group1809.utilities.proteomics_toolkit.PeptideEvidenceUtils;
+import cn.ac.dicp.group1809.utilities.uniprot_reader.fasta.FastaParser;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
@@ -12,6 +14,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -21,14 +24,15 @@ import java.util.List;
  * @since V1.0
  */
 public class MascotCSVReader {
-	private Logger logger = LoggerFactory.getLogger(MascotCSVReader.class);
 	private static final MascotCSVReader instance = new MascotCSVReader();
+	private Logger logger = LoggerFactory.getLogger(MascotCSVReader.class);
+	private FastaParser fastaParser = FastaParser.getInstance();
+
+	private MascotCSVReader() {
+	}
 
 	public static MascotCSVReader getInstance() {
 		return instance;
-	}
-
-	private MascotCSVReader() {
 	}
 
 	/**
@@ -56,7 +60,8 @@ public class MascotCSVReader {
 			switch (name) {
 				case "Header":
 					HeaderReader headerReader = new HeaderReader();
-					mascotCSV.setHeader(headerReader.read(recordList, i + 1));
+					Header header = headerReader.read(recordList, i + 1);
+					mascotCSV.setHeader(header);
 					i = headerReader.getRowNum();
 					break;
 				case "Decoy":
@@ -103,7 +108,28 @@ public class MascotCSVReader {
 		}
 		csvParser.close();
 		fileReader.close();
-		logger.info("mascot csv file reading complete!");
+		setPeptideEvidence(mascotCSV);
+		logger.info("Mascot csv file reading complete!");
 		return mascotCSV;
+	}
+
+	private void setPeptideEvidence(MascotCSV mascotCSV) throws IOException {
+		String fastaFile = mascotCSV.getHeader().getFastaFile();
+		HashMap<String, Protein> proteinMap = fastaParser.read(fastaFile);
+		List<PeptideHit> peptideHitList = mascotCSV.getPeptideHitList();
+		for (PeptideHit peptideHit : peptideHitList) {
+			Peptide peptide = peptideHit.getPeptide();
+			String sequence = peptide.getSequence();
+			String prot_acc = peptideHit.getProt_acc();
+			if (!proteinMap.containsKey(prot_acc)){
+				logger.error("The database does not contain the protein: " + prot_acc);
+				throw new IllegalArgumentException("The database does not contain the protein: " + prot_acc);
+			}
+			Protein protein = proteinMap.get(prot_acc);
+			List<PeptideEvidence> peptideEvidence = PeptideEvidenceUtils.getPeptideEvidence(sequence, protein);
+			if (peptideEvidence!=null){
+				peptide.setPeptideEvidenceList(peptideEvidence);
+			}
+		}
 	}
 }

@@ -23,6 +23,7 @@ public class Header {
 	private int SequencesAfterTaxonomyFilter;
 	private int NumberOfQueries;
 	private double TargetFalseDiscoveryRate;
+	private String warning;
 
 	public String getSearchTitle() {
 		return SearchTitle;
@@ -150,5 +151,13 @@ public class Header {
 
 	public void setTargetFalseDiscoveryRate(double targetFalseDiscoveryRate) {
 		TargetFalseDiscoveryRate = targetFalseDiscoveryRate;
+	}
+
+	public String getWarning() {
+		return warning;
+	}
+
+	public void setWarning(String warning) {
+		this.warning = warning;
 	}
 }

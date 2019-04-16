@@ -83,6 +83,9 @@ class HeaderReader {
 				case "Target false discovery rate":
 					header.setTargetFalseDiscoveryRate(Double.valueOf(value));
 					break;
+				case "Warning":
+					header.setWarning(value);
+					break;
 				default:
 					logger.error("Failed to read header section: Unknown title of csv file in Header section: " + name);
 					throw new IllegalArgumentException("Unknown title of csv file in Header section: " + name);

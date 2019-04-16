@@ -44,6 +44,8 @@ class ProteinHitReader {
 		for (index = index + 1; index < recordList.size(); index++) {
 			CSVRecord record = recordList.get(index);
 			PeptideHit peptideHit = new PeptideHit();
+			Peptide peptide = new Peptide();
+			peptideHit.setPeptide(peptide);
 			for (int j = 0; j < record.size(); j++) {
 				String name = titleRecord.get(j);
 				String value = record.get(j);
@@ -266,6 +268,6 @@ class ProteinHitReader {
 			}
 		}
 		peptide.setModificationPosition(modificationPosition);
-		PeptideUtils.setComposition(peptide);
+		PeptideUtils.setProperty(peptide);
 	}
 }

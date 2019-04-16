@@ -4,6 +4,7 @@ import cn.ac.dicp.group1809.utilities.proteomics_framework.model.definition.prot
 import cn.ac.dicp.group1809.utilities.proteomics_framework.model.definition.proteomics.Peptide;
 import cn.ac.dicp.group1809.utilities.proteomics_framework.model.definition.proteomics.PeptideEvidence;
 import cn.ac.dicp.group1809.utilities.proteomics_framework.model.definition.proteomics.Precursor;
+import cn.ac.dicp.group1809.utilities.proteomics_toolkit.TitleParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,6 +17,7 @@ import java.util.List;
  * @since V1.0
  */
 public class PeptideHit extends PSM {
+	private static final long serialVersionUID = -1031640682811256463L;
 	private Logger logger = LoggerFactory.getLogger(PeptideHit.class);
 	/**
 	 * Ordinal number of the protein hit (or protein family when grouping enabled)
@@ -25,10 +27,10 @@ public class PeptideHit extends PSM {
 	 * Ordinal number of the protein family member when grouping enabled
 	 */
 	private int prot_family_member;
-//	/**
-//	 * Protein accession string
-//	 */
-//	private String prot_acc;
+	/**
+	 * Protein accession string
+	 */
+	private String prot_acc;
 	/**
 	 * Protein description taken from Fasta title line.
 	 */
@@ -109,42 +111,14 @@ public class PeptideHit extends PSM {
 	 * PeptideHit sequence is unique to hit (grouping off) or family member (grouping on)
 	 */
 	private boolean pep_isunique;
-//	/**
-//	 * Observed or experimental m/z value.
-//	 */
-//	private double pep_exp_mz;
-//	/**
-//	 * Molecular mass calculated from experimental m/z value.
-//	 */
-//	private double pep_exp_mr;
-//	/**
-//	 * Observed or experimental charge
-//	 */
-//	private int pep_exp_z;
-//	/**
-//	 * Molecular mass calculated from matched peptide sequence
-//	 */
-//	private double pep_calc_mr;
 	/**
 	 * pep_exp_mr – pep_calc_mr
 	 */
 	private double pep_delta;
-//	/**
-//	 * Ordinal position of first peptide residue in protein sequence
-//	 */
-//	private int pep_start;
-//	/**
-//	 * Ordinal position of last peptide residue in protein sequence
-//	 */
-//	private int pep_end;
 	/**
 	 * Count of missed cleavage sites in peptide
 	 */
 	private int pep_miss;
-//	/**
-//	 * Mascot score for PSM
-//	 */
-//	private double pep_score;
 	/**
 	 * Homology threshold score for PSM
 	 */
@@ -157,18 +131,6 @@ public class PeptideHit extends PSM {
 	 * Expectation value for PSM
 	 */
 	private double pep_expect;
-//	/**
-//	 * Flanking residue on N-term side of peptide
-//	 */
-//	private String pep_res_before;
-//	/**
-//	 * PeptideHit sequence in 1 letter code
-//	 */
-//	private String pep_seq;
-//	/**
-//	 * Flanking residue on C-term side of peptide
-//	 */
-//	private String pep_res_after;
 	/**
 	 * Translation frame number (only for NA sequence databases)
 	 */
@@ -197,10 +159,6 @@ public class PeptideHit extends PSM {
 	 * Count of fragment ion matches in ion series used to calculate the score
 	 */
 	private int pep_num_match;
-//	/**
-//	 * Scan title taken from peak list
-//	 */
-//	private String pep_scan_title;
 	/**
 	 * OrganismNameTypeEnum of database (AA, NA, XA, or SL)
 	 */
@@ -223,18 +181,11 @@ public class PeptideHit extends PSM {
 	}
 
 	public String getProt_acc() {
-		return super.getPeptide().getPeptideEvidenceList().get(0).getProteinAccession();
+		return this.prot_acc;
 	}
 
 	public void setProt_acc(String prot_acc) {
-		Peptide peptide = super.getPeptide();
-		List<PeptideEvidence> peptideEvidenceList = peptide.getPeptideEvidenceList();
-		if (peptideEvidenceList.size() == 0) {
-			PeptideEvidence peptideEvidence = new PeptideEvidence();
-			peptideEvidenceList.add(peptideEvidence);
-			peptide.setPeptideEvidenceList(peptideEvidenceList);
-		}
-		peptide.getPeptideEvidenceList().get(0).setProteinAccession(prot_acc);
+		this.prot_acc = prot_acc;
 	}
 
 	public String getProt_desc() {
@@ -403,7 +354,11 @@ public class PeptideHit extends PSM {
 
 	public void setPep_exp_mz(double pep_exp_mz) {
 		Precursor precursor = super.getPrecursor();
+		if (precursor == null) {
+			precursor = new Precursor();
+		}
 		precursor.setMz(pep_exp_mz);
+		super.setPrecursor(precursor);
 	}
 
 	public double getPep_exp_mr() {
@@ -611,6 +566,7 @@ public class PeptideHit extends PSM {
 
 	public void setPep_scan_title(String pep_scan_title) {
 		super.setTitle(pep_scan_title);
+		super.setScanNumber(TitleParser.getScanNumber(pep_scan_title));
 	}
 
 	public String getPep_source() {
@@ -619,6 +575,11 @@ public class PeptideHit extends PSM {
 
 	public void setPep_source(String pep_source) {
 		this.pep_source = pep_source;
+	}
+
+	@Override
+	public int hashCode() {
+		return this.getPep_seq().length();
 	}
 
 	@Override
@@ -639,11 +600,6 @@ public class PeptideHit extends PSM {
 			return this.getPep_var_mod_pos().equals(pep_var_mod_pos);
 		}
 		return false;
-	}
-
-	@Override
-	public int hashCode() {
-		return this.getPep_seq().length();
 	}
 
 	@Override
