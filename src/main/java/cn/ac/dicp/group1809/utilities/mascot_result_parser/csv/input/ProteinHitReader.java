@@ -2,14 +2,12 @@ package cn.ac.dicp.group1809.utilities.mascot_result_parser.csv.input;
 
 import cn.ac.dicp.group1809.utilities.mascot_result_parser.csv.model.MascotCSV;
 import cn.ac.dicp.group1809.utilities.mascot_result_parser.csv.model.PeptideHit;
+import cn.ac.dicp.group1809.utilities.proteomics_framework.model.definition.proteomics.AminoAcid;
 import cn.ac.dicp.group1809.utilities.proteomics_framework.model.definition.proteomics.Modification;
 import cn.ac.dicp.group1809.utilities.proteomics_framework.model.definition.proteomics.ModificationSite;
 import cn.ac.dicp.group1809.utilities.proteomics_framework.model.definition.proteomics.Peptide;
-import cn.ac.dicp.group1809.utilities.proteomics_framework.model.enumeration.AminoAcid;
 import cn.ac.dicp.group1809.utilities.proteomics_toolkit.PeptideUtils;
 import org.apache.commons.csv.CSVRecord;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +19,6 @@ import java.util.TreeSet;
  * @since V1.0
  */
 class ProteinHitReader {
-	private Logger logger = LoggerFactory.getLogger(ProteinHitReader.class);
 	private TreeMap<Integer, Modification> fixedModificationTable;
 	private TreeMap<Integer, Modification> variableModificationTable;
 
@@ -38,7 +35,6 @@ class ProteinHitReader {
 	 * @return a list of peptide.
 	 */
 	List<PeptideHit> read(List<CSVRecord> recordList, int index) {
-		logger.info("Try to read protein hits.");
 		CSVRecord titleRecord = recordList.get(index);
 		List<PeptideHit> peptideHitList = new ArrayList<>();
 		for (index = index + 1; index < recordList.size(); index++) {
@@ -193,7 +189,6 @@ class ProteinHitReader {
 						peptideHit.setPep_source(value);
 						break;
 					default:
-						logger.error("Failed to read protein hits: Unknown title of csv file in Protein hits section: " + name);
 						throw new IllegalArgumentException("Unknown title of csv file in Protein hits section: " + name);
 				}
 			}
@@ -220,31 +215,31 @@ class ProteinHitReader {
 				AminoAcid aminoAcid = modificationSite.getAminoAcid();
 				ModificationSite.Position position = modificationSite.getPosition();
 				switch (position) {
-					case AnyNTerm:
+					case ANY_N_TERM:
 						if (aminoAcid == null || firstAA.equals(aminoAcid)) {
 							modificationPosition.put(0, fixedModification);
 						}
 						break;
-					case AnyCTerm:
+					case ANY_C_TERM:
 						if (aminoAcid == null || lastAA.equals(aminoAcid)) {
 							modificationPosition.put(length - 1, fixedModification);
 						}
 						break;
-					case ProteinNTerm:
+					case PROTEIN_N_TERM:
 						if (beforeResidue == '\0') {
 							if (aminoAcid == null || firstAA.equals(aminoAcid)) {
 								modificationPosition.put(0, fixedModification);
 							}
 						}
 						break;
-					case ProteinCTerm:
+					case PROTEIN_C_TERM:
 						if (afterResidue == '\0') {
 							if (aminoAcid == null || lastAA.equals(aminoAcid)) {
 								modificationPosition.put(length - 1, fixedModification);
 							}
 						}
 						break;
-					case Anywhere:
+					case ANYWHERE:
 						char aa = aminoAcid.getOneLetter();
 						for (int i = 0; i < length - 1; i++) {
 							char sequenceAA = sequenceAAs[i];

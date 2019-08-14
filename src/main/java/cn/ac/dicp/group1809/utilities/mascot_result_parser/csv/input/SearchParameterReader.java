@@ -2,8 +2,6 @@ package cn.ac.dicp.group1809.utilities.mascot_result_parser.csv.input;
 
 import cn.ac.dicp.group1809.utilities.mascot_result_parser.csv.model.SearchParameters;
 import org.apache.commons.csv.CSVRecord;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -12,11 +10,9 @@ import java.util.List;
  * @since V1.0
  */
 class SearchParameterReader {
-	private Logger logger = LoggerFactory.getLogger(SearchParameterReader.class);
 	private int rowNum = -1;
 
 	SearchParameters read(List<CSVRecord> recordList, int index) {
-		logger.info("Try to read search parameter section.");
 		SearchParameters search_parameters = new SearchParameters();
 		for (; index < recordList.size(); index++) {
 			CSVRecord record = recordList.get(index);
@@ -63,7 +59,6 @@ class SearchParameterReader {
 					search_parameters.setDecoyDatabaseAlsoSearched(value.equals("1"));
 					break;
 				default:
-					logger.error("Failed to read search parameter section: Unknown title of csv file in Search Parameters section: " + name);
 					throw new IllegalArgumentException("Unknown title of csv file in Search Parameters section: " + name);
 			}
 		}

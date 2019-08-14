@@ -12,14 +12,12 @@ import java.util.List;
  * @since V1.0
  */
 class FormatParameterReader {
-	private Logger logger = LoggerFactory.getLogger(FormatParameterReader.class);
 	private int rowNum;
 
 	FormatParameterReader() {
 	}
 
 	FormatParameters read(List<CSVRecord> recordList, int index) {
-		logger.info("Try to read format parameter section.");
 		FormatParameters format_parameters = new FormatParameters();
 		for (; index < recordList.size(); index++) {
 			CSVRecord record = recordList.get(index);
@@ -66,7 +64,6 @@ class FormatParameterReader {
 					format_parameters.setShowDuplicatePeptides(value.equals("1"));
 					break;
 				default:
-					logger.error("Failed to read format parameter section: Unknown title of csv file in format parameters section: " + name);
 					throw new IllegalArgumentException("Unknown title of csv file in format parameters section: " + name);
 			}
 		}

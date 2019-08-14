@@ -14,14 +14,12 @@ import java.util.List;
  * @since V1.0
  */
 class HeaderReader {
-	private Logger logger = LoggerFactory.getLogger(HeaderReader.class);
 	private int rowNum;
 
 	HeaderReader() {
 	}
 
 	Header read(List<CSVRecord> recordList, Integer index) {
-		logger.info("Try to read header section.");
 		Header header = new Header();
 		for (; index < recordList.size(); index++) {
 			CSVRecord record = recordList.get(index);
@@ -87,7 +85,6 @@ class HeaderReader {
 					header.setWarning(value);
 					break;
 				default:
-					logger.error("Failed to read header section: Unknown title of csv file in Header section: " + name);
 					throw new IllegalArgumentException("Unknown title of csv file in Header section: " + name);
 			}
 		}

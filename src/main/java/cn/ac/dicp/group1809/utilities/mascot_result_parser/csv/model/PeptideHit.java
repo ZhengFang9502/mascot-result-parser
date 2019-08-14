@@ -1,12 +1,7 @@
 package cn.ac.dicp.group1809.utilities.mascot_result_parser.csv.model;
 
-import cn.ac.dicp.group1809.utilities.proteomics_framework.model.definition.proteomics.PSM;
-import cn.ac.dicp.group1809.utilities.proteomics_framework.model.definition.proteomics.Peptide;
-import cn.ac.dicp.group1809.utilities.proteomics_framework.model.definition.proteomics.PeptideEvidence;
-import cn.ac.dicp.group1809.utilities.proteomics_framework.model.definition.proteomics.Precursor;
+import cn.ac.dicp.group1809.utilities.proteomics_framework.model.definition.proteomics.*;
 import cn.ac.dicp.group1809.utilities.proteomics_toolkit.TitleParser;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -18,7 +13,6 @@ import java.util.List;
  */
 public class PeptideHit extends PSM {
 	private static final long serialVersionUID = -1031640682811256463L;
-	private Logger logger = LoggerFactory.getLogger(PeptideHit.class);
 	/**
 	 * Ordinal number of the protein hit (or protein family when grouping enabled)
 	 */
@@ -565,8 +559,10 @@ public class PeptideHit extends PSM {
 	}
 
 	public void setPep_scan_title(String pep_scan_title) {
-		super.setTitle(pep_scan_title);
-		super.setScanNumber(TitleParser.getScanNumber(pep_scan_title));
+		MsnSpectrum msnSpectrum = new MsnSpectrum();
+		msnSpectrum.setTitle(pep_scan_title);
+		msnSpectrum.setScanNumber(TitleParser.getScanNumber(pep_scan_title));
+		super.setSpectrum(msnSpectrum);
 	}
 
 	public String getPep_source() {
@@ -608,22 +604,22 @@ public class PeptideHit extends PSM {
 		stringBuilder.append(prot_hit_num == 0 ? "" : prot_hit_num).append(",");
 		stringBuilder.append(prot_family_member == 0 ? "" : prot_family_member).append(",");
 		stringBuilder.append(getProt_acc() == null ? "" : getProt_acc()).append(",");
-		stringBuilder.append(getProt_desc() == null ? "" : getProt_desc()).append(",");
+//		stringBuilder.append(getProt_desc() == null ? "" : getProt_desc()).append(",");
 		stringBuilder.append(prot_score == 0 ? "" : prot_score).append(",");
-		stringBuilder.append(getProt_thresh() == null ? "" : getProt_thresh()).append(",");
-		stringBuilder.append(getProt_expect() == null ? "" : getProt_expect()).append(",");
+//		stringBuilder.append(getProt_thresh() == null ? "" : getProt_thresh()).append(",");
+//		stringBuilder.append(getProt_expect() == null ? "" : getProt_expect()).append(",");
 		stringBuilder.append(prot_mass == 0 ? "" : prot_mass).append(",");
-		stringBuilder.append(prot_matches == 0 ? "" : prot_mass).append(",");
+		stringBuilder.append(prot_matches == 0 ? "" : prot_matches).append(",");
 		stringBuilder.append(prot_matches_sig == 0 ? "" : prot_matches_sig).append(",");
 		stringBuilder.append(prot_sequences == 0 ? "" : prot_sequences).append(",");
 		stringBuilder.append(prot_sequences_sig == 0 ? "" : prot_sequences_sig).append(",");
-		stringBuilder.append(getProt_cover() == null ? "" : getProt_cover()).append(",");
-		stringBuilder.append(prot_len == 0 ? "" : prot_len).append(",");
-		stringBuilder.append(getProt_pi() == null ? "" : getProt_pi()).append(",");
-		stringBuilder.append(getProt_tax_str() == null ? "" : getProt_tax_str()).append(",");
-		stringBuilder.append(getProt_tax_id() == null ? "" : getProt_tax_id()).append(",");
-		stringBuilder.append(getProt_seq() == null ? "" : getProt_seq()).append(",");
-		stringBuilder.append(getProt_empai() == null ? "" : getProt_empai()).append(",");
+//		stringBuilder.append(getProt_cover() == null ? "" : getProt_cover()).append(",");
+//		stringBuilder.append(prot_len == 0 ? "" : prot_len).append(",");
+//		stringBuilder.append(getProt_pi() == null ? "" : getProt_pi()).append(",");
+//		stringBuilder.append(getProt_tax_str() == null ? "" : getProt_tax_str()).append(",");
+//		stringBuilder.append(getProt_tax_id() == null ? "" : getProt_tax_id()).append(",");
+//		stringBuilder.append(getProt_seq() == null ? "" : getProt_seq()).append(",");
+//		stringBuilder.append(getProt_empai() == null ? "" : getProt_empai()).append(",");
 		stringBuilder.append(pep_query == 0 ? "" : pep_query).append(",");
 		stringBuilder.append(pep_rank == 0 ? "" : pep_rank).append(",");
 		stringBuilder.append(pep_isbold ? "1" : "0").append(",");
@@ -637,21 +633,21 @@ public class PeptideHit extends PSM {
 		stringBuilder.append(getPep_end() == 0 ? "" : getPep_end()).append(",");
 		stringBuilder.append(pep_miss == 0 ? "" : pep_miss).append(",");
 		stringBuilder.append(getPep_score() == 0 ? "" : getPep_score()).append(",");
-		stringBuilder.append(pep_homol == 0 ? "" : pep_homol).append(",");
-		stringBuilder.append(pep_ident == 0 ? "" : pep_ident).append(",");
+//		stringBuilder.append(pep_homol == 0 ? "" : pep_homol).append(",");
+//		stringBuilder.append(pep_ident == 0 ? "" : pep_ident).append(",");
 		stringBuilder.append(pep_expect == 0 ? "" : pep_expect).append(",");
 		stringBuilder.append(getPep_res_before() == 0 ? "" : getPep_res_before()).append(",");
 		stringBuilder.append(getPep_seq() == null ? "" : getPep_seq()).append(",");
 		stringBuilder.append(getPep_res_after() == 0 ? "" : getPep_res_after()).append(",");
-		stringBuilder.append(pep_frame == null ? "" : pep_frame).append(",");
+//		stringBuilder.append(pep_frame == null ? "" : pep_frame).append(",");
 		stringBuilder.append(pep_var_mod == null ? "" : pep_var_mod).append(",");
 		stringBuilder.append(pep_var_mod_pos == null ? "" : pep_var_mod_pos).append(",");
 		stringBuilder.append(pep_summed_mod_pos == null ? "" : pep_summed_mod_pos).append(",");
 		stringBuilder.append(pep_local_mod_pos == null ? "" : pep_local_mod_pos).append(",");
-		stringBuilder.append(pep_var_mod_conf == null ? "" : pep_var_mod_conf).append(",");
-		stringBuilder.append(pep_num_match == 0 ? "" : pep_num_match).append(",");
-		stringBuilder.append(getPep_scan_title() == null ? "" : getPep_scan_title()).append(",");
-		stringBuilder.append(pep_source == null ? "" : pep_source).append(",");
+//		stringBuilder.append(pep_var_mod_conf == null ? "" : pep_var_mod_conf).append(",");
+//		stringBuilder.append(pep_num_match == 0 ? "" : pep_num_match).append(",");
+		stringBuilder.append(getPep_scan_title() == null ? "" : getPep_scan_title());
+//		stringBuilder.append(pep_source == null ? "" : pep_source).append(",");
 		return stringBuilder.toString();
 	}
 }

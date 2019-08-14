@@ -10,12 +10,13 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
+
+import static org.slf4j.LoggerFactory.getLogger;
 
 /**
  * Generate a {@link MascotCSV MascotCSV} with necessary information defined depended on the csv file.
@@ -24,15 +25,15 @@ import java.util.List;
  * @since V1.0
  */
 public class MascotCSVReader {
-	private static final MascotCSVReader instance = new MascotCSVReader();
-	private Logger logger = LoggerFactory.getLogger(MascotCSVReader.class);
-	private FastaParser fastaParser = FastaParser.getInstance();
+	private static final MascotCSVReader INSTANCE = new MascotCSVReader();
+	private static final Logger LOGGER = getLogger(MascotCSVReader.class);
+	private FastaParser fastaParser = new FastaParser();
 
 	private MascotCSVReader() {
 	}
 
 	public static MascotCSVReader getInstance() {
-		return instance;
+		return INSTANCE;
 	}
 
 	/**
@@ -41,10 +42,9 @@ public class MascotCSVReader {
 	 * @param path the file location of a csv file.
 	 */
 	public MascotCSV read(String path) throws IOException {
-		logger.info("Try to read file: " + path);
+		LOGGER.debug("Reading mascot identification result file: {}.", path);
 		if (!path.endsWith(".csv")) {
-			logger.error("Failed to read non-mascot csv file!");
-			throw new IllegalArgumentException("This is not a csv file.");
+			throw new IllegalArgumentException("Invalid file format: " + path);
 		}
 
 		FileReader fileReader = new FileReader(path);
@@ -52,7 +52,7 @@ public class MascotCSVReader {
 		List<CSVRecord> recordList = csvParser.getRecords();
 		MascotCSV mascotCSV = new MascotCSV();
 
-		Integer i = 0;
+		int i = 0;
 		loop:
 		for (; i < recordList.size(); ) {
 			CSVRecord record = recordList.get(i);
@@ -102,14 +102,13 @@ public class MascotCSVReader {
 					mascotCSV.setPeptideHitList(peptideHitList);
 					break loop;
 				default:
-					logger.error("Failed to recognize the title name: " + name);
 					throw new IllegalArgumentException("Invalid title name: " + name);
 			}
 		}
 		csvParser.close();
 		fileReader.close();
 		setPeptideEvidence(mascotCSV);
-		logger.info("Mascot csv file reading complete!");
+		LOGGER.debug("Finish reading mascot identification result csv file: {}, and get {} peptide hits.", path, mascotCSV.getPeptideHitList().size());
 		return mascotCSV;
 	}
 
@@ -121,13 +120,12 @@ public class MascotCSVReader {
 			Peptide peptide = peptideHit.getPeptide();
 			String sequence = peptide.getSequence();
 			String prot_acc = peptideHit.getProt_acc();
-			if (!proteinMap.containsKey(prot_acc)){
-				logger.error("The database does not contain the protein: " + prot_acc);
+			if (!proteinMap.containsKey(prot_acc)) {
 				throw new IllegalArgumentException("The database does not contain the protein: " + prot_acc);
 			}
 			Protein protein = proteinMap.get(prot_acc);
 			List<PeptideEvidence> peptideEvidence = PeptideEvidenceUtils.getPeptideEvidence(sequence, protein);
-			if (peptideEvidence!=null){
+			if (peptideEvidence != null) {
 				peptide.setPeptideEvidenceList(peptideEvidence);
 			}
 		}

@@ -1,6 +1,6 @@
 package cn.ac.dicp.group1809.utilities.mascot_result_parser.mgf.model;
 
-import cn.ac.dicp.group1809.utilities.proteomics_framework.model.definition.proteomics.Ms2Spectrum;
+import cn.ac.dicp.group1809.utilities.proteomics_framework.model.definition.proteomics.MsnSpectrum;
 
 import java.util.List;
 
@@ -9,13 +9,13 @@ import java.util.List;
  * @since V1.0
  */
 public class MGF {
-	private List<Ms2Spectrum> ms2SpectrumList;
+	private List<MsnSpectrum> msnSpectrumList;
 
-	public List<Ms2Spectrum> getMs2SpectrumList() {
-		return ms2SpectrumList;
+	public List<MsnSpectrum> getMsnSpectrumList() {
+		return msnSpectrumList;
 	}
 
-	public void setMs2SpectrumList(List<Ms2Spectrum> ms2SpectrumList) {
-		this.ms2SpectrumList = ms2SpectrumList;
+	public void setMsnSpectrumList(List<MsnSpectrum> msnSpectrumList) {
+		this.msnSpectrumList = msnSpectrumList;
 	}
 }

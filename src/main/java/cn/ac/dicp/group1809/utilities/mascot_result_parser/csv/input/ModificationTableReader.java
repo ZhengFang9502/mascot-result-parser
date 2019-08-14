@@ -6,8 +6,6 @@ import cn.ac.dicp.group1809.utilities.mascot_result_parser.csv.model.VariableMod
 import cn.ac.dicp.group1809.utilities.proteomics_framework.model.definition.proteomics.Modification;
 import cn.ac.dicp.group1809.utilities.proteomics_toolkit.ModificationParser;
 import org.apache.commons.csv.CSVRecord;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -16,7 +14,6 @@ import java.util.List;
  * @since V1.0
  */
 class ModificationTableReader {
-	private Logger logger = LoggerFactory.getLogger(ModificationTableReader.class);
 	private ModificationParser modificationParser = new ModificationParser();
 	private int rowNum;
 
@@ -27,10 +24,8 @@ class ModificationTableReader {
 		ModificationTable modificationTable;
 		if (fixed) {
 			modificationTable = new FixedModificationTable();
-			logger.info("Try to read fixed modification_table section.");
 		} else {
 			modificationTable = new VariableModificationTable();
-			logger.info("Try to read variable modification_table section.");
 		}
 		for (index = index + 1; index < recordList.size(); index++) {
 			CSVRecord record = recordList.get(index);
@@ -39,11 +34,10 @@ class ModificationTableReader {
 				break;
 			}
 			int identifier = Integer.valueOf(record.get(0));
-			value=value.replace(" (","(");
-			Modification modification = getModification(value,fixed);
+			value = value.replace(" (", "(");
+			Modification modification = getModification(value, fixed);
 			modification.setId(identifier);
 			if (identifier == 0) {
-				logger.error("Failed to generate modification table: Invalid modification table identifier: 0!");
 				throw new IllegalArgumentException("Invalid modification table identifier: 0!");
 			}
 			modificationTable.addModification(identifier, modification);
