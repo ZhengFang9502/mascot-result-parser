@@ -44,7 +44,7 @@ public class MascotCSVReader {
 	public MascotCSV read(String path) throws IOException {
 		LOGGER.debug("Reading mascot identification result file: {}.", path);
 		if (!path.endsWith(".csv")) {
-			throw new IllegalArgumentException("Invalid file format: " + path);
+			throw new IllegalArgumentException("Invalid File Format: " + path);
 		}
 
 		FileReader fileReader = new FileReader(path);
@@ -102,7 +102,7 @@ public class MascotCSVReader {
 					mascotCSV.setPeptideHitList(peptideHitList);
 					break loop;
 				default:
-					throw new IllegalArgumentException("Invalid title name: " + name);
+					throw new IllegalArgumentException("Invalid Title Name: " + name);
 			}
 		}
 		csvParser.close();
@@ -121,10 +121,10 @@ public class MascotCSVReader {
 			String sequence = peptide.getSequence();
 			String prot_acc = peptideHit.getProt_acc();
 			if (!proteinMap.containsKey(prot_acc)) {
-				throw new IllegalArgumentException("The database does not contain the protein: " + prot_acc);
+				throw new IllegalArgumentException("The Database Does Not Contain the Protein: " + prot_acc);
 			}
 			Protein protein = proteinMap.get(prot_acc);
-			List<PeptideEvidence> peptideEvidence = PeptideEvidenceUtils.getPeptideEvidence(sequence, protein);
+			List<PeptideEvidence> peptideEvidence = PeptideEvidenceUtils.querySingleProtein(sequence, protein);
 			if (peptideEvidence != null) {
 				peptide.setPeptideEvidenceList(peptideEvidence);
 			}

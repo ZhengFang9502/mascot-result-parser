@@ -189,7 +189,7 @@ class ProteinHitReader {
 						peptideHit.setPep_source(value);
 						break;
 					default:
-						throw new IllegalArgumentException("Unknown title of csv file in Protein hits section: " + name);
+						throw new IllegalArgumentException("Unknown Title of CSV File in Protein Hits Section: " + name);
 				}
 			}
 			setProperty(peptideHit);

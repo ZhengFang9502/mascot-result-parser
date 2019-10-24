@@ -59,7 +59,7 @@ class SearchParameterReader {
 					search_parameters.setDecoyDatabaseAlsoSearched(value.equals("1"));
 					break;
 				default:
-					throw new IllegalArgumentException("Unknown title of csv file in Search Parameters section: " + name);
+					throw new IllegalArgumentException("Unknown Title of CSV File in Search Parameters Section: " + name);
 			}
 		}
 		rowNum = index;

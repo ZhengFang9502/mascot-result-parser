@@ -64,7 +64,7 @@ class FormatParameterReader {
 					format_parameters.setShowDuplicatePeptides(value.equals("1"));
 					break;
 				default:
-					throw new IllegalArgumentException("Unknown title of csv file in format parameters section: " + name);
+					throw new IllegalArgumentException("Unknown Title of CSV File in Format Parameters Section: " + name);
 			}
 		}
 		rowNum = index;

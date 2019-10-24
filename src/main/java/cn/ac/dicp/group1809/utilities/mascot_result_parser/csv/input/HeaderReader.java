@@ -85,7 +85,7 @@ class HeaderReader {
 					header.setWarning(value);
 					break;
 				default:
-					throw new IllegalArgumentException("Unknown title of csv file in Header section: " + name);
+					throw new IllegalArgumentException("Unknown Title of CSV File in Header Section: " + name);
 			}
 		}
 		rowNum = index;

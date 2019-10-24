@@ -55,7 +55,7 @@ public class MgfReader {
 			precursor.setIntensity(ms2Query.getPeptideIntensity());
 			msnSpectrum.setPrecursor(precursor);
 			msnSpectrum.setTitle(ms2Query.getTitle());
-			msnSpectrum.setRTinSec(Double.valueOf(ms2Query.getRetentionTime()));
+			msnSpectrum.setRTinSec(Double.parseDouble(ms2Query.getRetentionTime()));
 			msnSpectrumList.add(msnSpectrum);
 		}
 		mgf.setMsnSpectrumList(msnSpectrumList);

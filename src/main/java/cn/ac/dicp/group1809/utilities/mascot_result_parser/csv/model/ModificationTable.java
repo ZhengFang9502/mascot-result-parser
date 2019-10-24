@@ -13,7 +13,7 @@ public class ModificationTable {
 
 	public void addModification(int identifier, Modification modification) {
 		if (this.modificationTable.containsKey(identifier)) {
-			throw new IllegalArgumentException("The variable modification_table have contained the identifier: " + identifier);
+			throw new IllegalArgumentException("The Variable Modification_table Have Contained the Identifier: " + identifier);
 		}
 		this.modificationTable.put(identifier, modification);
 	}

@@ -38,7 +38,7 @@ class ModificationTableReader {
 			Modification modification = getModification(value, fixed);
 			modification.setId(identifier);
 			if (identifier == 0) {
-				throw new IllegalArgumentException("Invalid modification table identifier: 0!");
+				throw new IllegalArgumentException("Invalid Modification Table Identifier: 0!");
 			}
 			modificationTable.addModification(identifier, modification);
 		}

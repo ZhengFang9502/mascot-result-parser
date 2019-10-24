@@ -38,7 +38,7 @@ class DecoyReader {
 					decoy.setNumberOfMatchesAboveHomologyThresholdInSearchOfDecoyDatabase(Integer.valueOf(value));
 					break;
 				default:
-					throw new IllegalArgumentException("Unknown title of csv file in Decoy section: " + name);
+					throw new IllegalArgumentException("Unknown Title of CSV File in Decoy Section: " + name);
 			}
 		}
 		rowNum = index;
